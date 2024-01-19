@@ -5,6 +5,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlinx-serialization")
     id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.serialization") // Adjust version as needed
 
 }
 
@@ -15,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.m.ammar.composeTemplate"
-        minSdk = 21
+        minSdk = 27
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -75,13 +76,12 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     ksp("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.compose.material3:material3:1.1.2")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
-    //implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc") //In-case you replace kamel uncomment this,as we have this in kamel dependency also
+//    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc") //In-case you replace kamel uncomment this,as we have this in kamel dependency also
 
     //Logging
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -93,13 +93,19 @@ dependencies {
         because("For the async image loading")
     }
 
-    // Define a variable for the Ktor version
     val ktorVersion = "2.3.7"
 
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+//    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2") // Adjust version as needed
+
+//    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-client-json:$ktorVersion")
+//    implementation("io.ktor:ktor-client-gson:$ktorVersion")
 
 
 }

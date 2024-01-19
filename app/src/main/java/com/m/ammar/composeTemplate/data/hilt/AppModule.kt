@@ -2,22 +2,28 @@ package com.m.ammar.composeTemplate.data.hilt
 
 import android.app.Application
 import android.content.Context
-import com.m.ammar.composeTemplate.data.RetrofitInterface
+import com.google.gson.Gson
 import com.m.ammar.composeTemplate.data.managers.DataManager
+import com.m.ammar.composeTemplate.data.managers.DataManagerImpl
 import com.m.ammar.composeTemplate.prefs.PreferencesHelper
 import com.m.ammar.composeTemplate.prefs.PreferencesHelperImpl
-import com.m.ammar.composeTemplate.utility.Constants.API_BASE_URL
 import com.m.ammar.composeTemplate.utility.Constants.PREF_NAME
 import com.m.ammar.composeTemplate.utility.ResourceProvider
-import com.m.ammar.composeTemplate.data.managers.DataManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.header
+import io.ktor.http.ContentType
+import kotlinx.serialization.json.Json
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -35,12 +41,55 @@ object AppModule {
             .writeTimeout(1000, TimeUnit.SECONDS).build()
     }
 
+//    val client = HttpClient {
+//        install(JsonFeature) {
+//            serializer = KotlinxSerializer(Json {
+//                ignoreUnknownKeys = true
+//            })
+//        }
+//    }
+
     @Provides
     @Singleton
-    fun provideRetrofitInterface(client: OkHttpClient): RetrofitInterface {
-        return Retrofit.Builder().baseUrl(API_BASE_URL).client(client)
-            .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(RetrofitInterface::class.java)
+    fun provideApiClient() = HttpClient(Android) {
+        install(Logging) {
+            logger = object : io.ktor.client.plugins.logging.Logger {
+                override fun log(message: String) {
+                    println("KTOR_logging => $message")
+                }
+            }
+            level = LogLevel.ALL
+        }
+        val json = Json { ignoreUnknownKeys = true }
+        HttpClient {
+            install(ContentNegotiation) {
+                Gson()
+            }
+        }
+//        val json = Json {
+//            ignoreUnknownKeys = true
+//            explicitNulls = false
+//
+//
+//            prettyPrint = true
+//            isLenient = true
+//            ignoreUnknownKeys = true
+//
+//        }
+//
+//        install(ContentNegotiation) {
+//            json(json, contentType = ContentType.Application.Any)
+//
+//        }
+//
+//
+//        // Set default headers for every request
+        defaultRequest {
+            header("Content-Type", "text/plain; charset=utf-8")
+            header("Accept", "*/*")
+
+        }
+
     }
 
     @Singleton
