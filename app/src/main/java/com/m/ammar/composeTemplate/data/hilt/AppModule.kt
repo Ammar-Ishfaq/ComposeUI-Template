@@ -2,7 +2,6 @@ package com.m.ammar.composeTemplate.data.hilt
 
 import android.app.Application
 import android.content.Context
-import com.google.gson.Gson
 import com.m.ammar.composeTemplate.data.managers.DataManager
 import com.m.ammar.composeTemplate.data.managers.DataManagerImpl
 import com.m.ammar.composeTemplate.prefs.PreferencesHelper
@@ -14,19 +13,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.header
 import io.ktor.http.ContentType
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -41,56 +35,19 @@ object AppModule {
             .writeTimeout(1000, TimeUnit.SECONDS).build()
     }
 
-//    val client = HttpClient {
-//        install(JsonFeature) {
-//            serializer = KotlinxSerializer(Json {
-//                ignoreUnknownKeys = true
-//            })
-//        }
-//    }
+
 
     @Provides
     @Singleton
-    fun provideApiClient() = HttpClient(Android) {
-        install(Logging) {
-            logger = object : io.ktor.client.plugins.logging.Logger {
-                override fun log(message: String) {
-                    println("KTOR_logging => $message")
-                }
-            }
-            level = LogLevel.ALL
-        }
+    fun provideApiClient(): HttpClient {
         val json = Json { ignoreUnknownKeys = true }
-        HttpClient {
+      return HttpClient {
             install(ContentNegotiation) {
-                Gson()
+                json(json, contentType = ContentType.Any)
             }
         }
-//        val json = Json {
-//            ignoreUnknownKeys = true
-//            explicitNulls = false
-//
-//
-//            prettyPrint = true
-//            isLenient = true
-//            ignoreUnknownKeys = true
-//
-//        }
-//
-//        install(ContentNegotiation) {
-//            json(json, contentType = ContentType.Application.Any)
-//
-//        }
-//
-//
-//        // Set default headers for every request
-        defaultRequest {
-            header("Content-Type", "text/plain; charset=utf-8")
-            header("Accept", "*/*")
-
-        }
-
     }
+
 
     @Singleton
     @Provides

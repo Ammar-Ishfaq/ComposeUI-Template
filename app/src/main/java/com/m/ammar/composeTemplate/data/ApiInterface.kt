@@ -1,7 +1,6 @@
 package com.m.ammar.composeTemplate.data
 
-import android.util.Log
-import com.google.gson.Gson
+import com.m.ammar.composeTemplate.models.ResistorObject
 import com.m.ammar.composeTemplate.utility.Constants.API_BASE_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -11,9 +10,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.put
-import io.ktor.client.statement.bodyAsText
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 
 abstract class BaseApiService(
@@ -56,25 +53,7 @@ abstract class BaseApiService(
     }
 }
 
-class ApiInterface @Inject constructor(val client: HttpClient) :
+class ApiInterface @Inject constructor(client: HttpClient) :
     BaseApiService(client, API_BASE_URL) {
-    suspend fun getList(): String {
-        return try {
-            val mRes = client.get(API_BASE_URL + "ResistanceGuide.json").bodyAsText()
-
-            val gson = Gson()
-            val json = gson.toJson(mRes)
-            Log.d("FARAN", json[0].toString()[0].toString())
-
-            mRes
-        } catch (e: Exception) {
-            if (e is CancellationException) throw e
-            e.printStackTrace()
-            ""
-        }
-    }
-//    = get(endpoint = "ResistanceGuide.json") {
-//        contentType(ContentType.Application.Json)
-//
-//    }
+     suspend fun getList():List<ResistorObject> = get(endpoint = "ResistanceGuide.json")
 }

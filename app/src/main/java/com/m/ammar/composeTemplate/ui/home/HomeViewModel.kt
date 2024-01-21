@@ -30,8 +30,8 @@ class HomeViewModel @Inject constructor(
                                 )
                             return@launch
                         }
-//                    _response.value =
-//                        HomeScreenUiState.Success(obj = response)
+                    _response.value =
+                        HomeScreenUiState.Success(obj = response)
                 }
                 onFailure {
 
