@@ -5,7 +5,7 @@ This template repository serves as a quick-start guide for developing Android ap
 ## Libraries Included
 
 - [Hilt](https://dagger.dev/hilt): Dependency injection library for Android, reducing boilerplate code in your project.
-- [Retrofit](https://github.com/square/retrofit): A type-safe HTTP client for Android and the JVM.
+- [Ktor](https://ktor.io/): A secure and type-safe HTTP client designed for Android and the JVM.
 - [Kamel](https://github.com/Kamel-Media/Kamel): Image loading library.
 
 ## How to Use
