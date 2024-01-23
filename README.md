@@ -30,4 +30,4 @@ This project is licensed under the [MIT License](https://github.com/Ammar-Ishfaq
 
 ## Acknowledgments 🙌
 
-Special thanks to [hadi](https://github.com/hadiyarajesh) for contributing to the app navigation pattern.
+Special thanks to [hadi](https://github.com/hadiyarajesh) for the code inspiration in the app navigation pattern; I've utilized and acknowledged some of the code from his repository.
