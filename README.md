@@ -7,6 +7,7 @@ This repository serves as a quick-start guide for developing Android apps using 
 - [Hilt](https://dagger.dev/hilt): A dependency injection library for Android that reduces boilerplate code in your project.
 - [Ktor](https://ktor.io/): A secure and type-safe HTTP client designed for Android and the JVM.
 - [Kamel](https://github.com/Kamel-Media/Kamel): An image loading library.
+- [Timber](https://github.com/JakeWharton/timber): A logger with a small, extensible API that provides utility on top of Android's normal Log class.
 
 ## Retrofit Base API Pattern
 
