@@ -24,6 +24,7 @@ timber = "5.0.1"
 ktor = "2.3.5"
 kamel = "0.7.3"
 securityCrypto = "1.1.0-alpha06"
+accompanistPermissions = "0.35.1-alpha"
 
 
 [libraries]
@@ -64,6 +65,7 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 kamel = { module = "media.kamel:kamel-image", version.ref = "kamel" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanistPermissions" }
 
 
 [plugins]
