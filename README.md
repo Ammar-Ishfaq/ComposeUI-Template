@@ -28,7 +28,3 @@ Contributions to this project are welcome! If you encounter issues or have sugge
 ## License 📄
 
 This project is licensed under the [MIT License](https://github.com/Ammar-Ishfaq/ComposeUI-Template/blob/master/LICENSE).
-
-## Acknowledgments 🙌
-
-Special thanks to [hadi](https://github.com/hadiyarajesh) for the code inspiration in the app navigation pattern; I've utilized and acknowledged some of the code from his repository.
