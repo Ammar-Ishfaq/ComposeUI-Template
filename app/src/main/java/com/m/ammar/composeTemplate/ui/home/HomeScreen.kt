@@ -3,6 +3,7 @@ package com.m.ammar.composeTemplate.ui.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +33,7 @@ import com.m.ammar.composeTemplate.navigation.TopLevelDestination
 import com.m.ammar.composeTemplate.ui.components.ErrorItem
 import com.m.ammar.composeTemplate.ui.components.AppLoader
 import com.m.ammar.composeTemplate.ui.components.VerticalSpacer
+import com.m.ammar.composeTemplate.ui.dialog.PermissionBox
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 
@@ -91,37 +97,71 @@ private fun HomeScreenContent(
     onNavigateClick: (source: String) -> Unit
 ) {
     val context = LocalContext.current
+    var isAskLocationPermission by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Create an ImagePainter with Coil
-        KamelImage(
-            resource = asyncPainterResource(data = imgURL),
-            contentDescription = imgURL,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .background(Color.LightGray),
-        )
-        Text(text = msg)
-        VerticalSpacer(size = 16)
-        Button(
-            onClick = {
-                onNavigateClick(
-                    context.getString(R.string.screen_name).format(TopLevelDestination.Home.title)
+    Box {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Create an ImagePainter with Coil
+            KamelImage(
+                resource = asyncPainterResource(data = imgURL),
+                contentDescription = imgURL,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .background(Color.LightGray),
+            )
+            Text(text = msg)
+            VerticalSpacer(size = 16)
+            Button(
+                onClick = {
+                    onNavigateClick(
+                        context.getString(R.string.screen_name)
+                            .format(TopLevelDestination.Home.title)
+                    )
+                }
+            ) {
+                Text(
+                    text = stringResource(
+                        R.string.go_to_screen,
+                        TopLevelDestination.Detail.title
+                    )
                 )
             }
-        ) {
-            Text(
-                text = stringResource(
-                    R.string.go_to_screen,
-                    TopLevelDestination.Detail.title
+            VerticalSpacer(size = 16)
+
+            Button(
+                onClick = {
+                    isAskLocationPermission = true
+                }
+            ) {
+
+                Text(
+                    text = stringResource(
+                        R.string.permission_test
+                    )
                 )
-            )
+            }
+        }
+
+        if (isAskLocationPermission) {
+            PermissionBox(
+                permissions = listOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                onBackPressed = {
+                    isAskLocationPermission = false
+                }
+            ) {
+                // you can wrap any widget down there that require above list of permissions
+                Text(
+                    text = stringResource(
+                        R.string.permission_granted
+                    )
+                )
+            }
         }
     }
 }

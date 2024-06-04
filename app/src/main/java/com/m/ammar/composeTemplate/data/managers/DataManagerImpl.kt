@@ -1,6 +1,6 @@
 package com.m.ammar.composeTemplate.data.managers
 
-import com.m.ammar.composeTemplate.data.RetrofitInterface
+import com.m.ammar.composeTemplate.data.ApiInterface
 import com.m.ammar.composeTemplate.prefs.PreferencesHelper
 import com.m.ammar.composeTemplate.prefs.PreferencesHelperImpl
 import com.m.ammar.composeTemplate.utility.ResourceProvider
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class DataManagerImpl @Inject constructor(
     private val resourceProvider: ResourceProvider,
-    private val appService: RetrofitInterface,
+    private val appService: ApiInterface,
     private val preferencesHelper: PreferencesHelper,
     private val preferencesHelperImpl: PreferencesHelperImpl
 ) : DataManager {
@@ -19,7 +19,7 @@ class DataManagerImpl @Inject constructor(
         return resourceProvider
     }
 
-    override fun getApiHelper(): RetrofitInterface {
+    override fun getApiHelper(): ApiInterface {
         return appService
     }
 

@@ -5,8 +5,6 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -57,27 +55,27 @@ class PreferencesHelperImpl @Inject constructor(val context: Context, prefFileNa
         return prefs.getBoolean(key, false)
     }
 
-    private suspend fun <T> putObject(key: String, `object`: T) {
-        val jsonString = GsonBuilder().create().toJson(`object`)
-        prefs.edit { putString(key, jsonString) }
-    }
-
-    private inline fun <reified T> getObject(key: String): T? {
-        val value = this.getString(key)
-        return try {
-            GsonBuilder().create().fromJson(value, T::class.java)
-        } catch (e: Exception) {
-            Timber.e("try_catch_error => $e")
-            null
-        }
-    }
-
-    private inline fun <reified T> getList(key: String): List<T>? {
-        val value = this.getString(key)
-        return GsonBuilder().create().fromJson<List<T>>(
-            value, object : TypeToken<List<T>>() {}.type
-        )
-    }
+//    private suspend fun <T> putObject(key: String, `object`: T) {
+//        val jsonString = GsonBuilder().create().toJson(`object`)
+//        prefs.edit { putString(key, jsonString) }
+//    }
+//
+//    private inline fun <reified T> getObject(key: String): T? {
+//        val value = this.getString(key)
+//        return try {
+//            GsonBuilder().create().fromJson(value, T::class.java)
+//        } catch (e: Exception) {
+//            Timber.e("try_catch_error => $e")
+//            null
+//        }
+//    }
+//
+//    private inline fun <reified T> getList(key: String): List<T>? {
+//        val value = this.getString(key)
+//        return GsonBuilder().create().fromJson<List<T>>(
+//            value, object : TypeToken<List<T>>() {}.type
+//        )
+//    }
 
 
 }

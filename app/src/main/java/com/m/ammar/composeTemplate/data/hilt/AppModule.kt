@@ -2,25 +2,25 @@ package com.m.ammar.composeTemplate.data.hilt
 
 import android.app.Application
 import android.content.Context
-import com.m.ammar.composeTemplate.data.RetrofitInterface
 import com.m.ammar.composeTemplate.data.managers.DataManager
+import com.m.ammar.composeTemplate.data.managers.DataManagerImpl
 import com.m.ammar.composeTemplate.prefs.PreferencesHelper
 import com.m.ammar.composeTemplate.prefs.PreferencesHelperImpl
-import com.m.ammar.composeTemplate.utility.Constants.API_BASE_URL
 import com.m.ammar.composeTemplate.utility.Constants.PREF_NAME
 import com.m.ammar.composeTemplate.utility.ResourceProvider
-import com.m.ammar.composeTemplate.data.managers.DataManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.http.ContentType
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -35,13 +35,19 @@ object AppModule {
             .writeTimeout(1000, TimeUnit.SECONDS).build()
     }
 
+
+
     @Provides
     @Singleton
-    fun provideRetrofitInterface(client: OkHttpClient): RetrofitInterface {
-        return Retrofit.Builder().baseUrl(API_BASE_URL).client(client)
-            .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(RetrofitInterface::class.java)
+    fun provideApiClient(): HttpClient {
+        val json = Json { ignoreUnknownKeys = true }
+      return HttpClient {
+            install(ContentNegotiation) {
+                json(json, contentType = ContentType.Any)
+            }
+        }
     }
+
 
     @Singleton
     @Provides
