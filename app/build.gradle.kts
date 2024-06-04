@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.security.crypto)
+    implementation(libs.accompanist.permissions)
     ksp(libs.hilt.android.compiler)
 
 
