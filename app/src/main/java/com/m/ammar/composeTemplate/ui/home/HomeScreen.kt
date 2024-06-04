@@ -99,7 +99,7 @@ private fun HomeScreenContent(
     val context = LocalContext.current
     var isAskLocationPermission by remember { mutableStateOf(false) }
 
-    Box() {
+    Box {
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.Center,
@@ -155,6 +155,7 @@ private fun HomeScreenContent(
                     isAskLocationPermission = false
                 }
             ) {
+                // you can wrap any widget down there that require above list of permissions
                 Text(
                     text = stringResource(
                         R.string.permission_granted
